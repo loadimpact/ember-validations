@@ -9,7 +9,9 @@ const {
 
 export default EmberObject.extend({
   unknownProperty(property) {
-    set(this, property, emberArray());
-    return get(this, property);
+    if (property !== 'setUnknownProperty') {
+      set(this, property, emberArray());
+      return get(this, property);
+    }
   }
 });
