@@ -193,13 +193,16 @@ export default Mixin.create(setValidityMixin, {
 
   validate() {
     return this._validate().then((vals) => {
-      let errors = get(this, 'errors');
+      //let errors = get(this, 'errors');
 
       if (vals.indexOf(false) > -1) {
-        return reject(errors);
+        // TODO: we cannot pass `errors` because it is a ProxyMixin object and there is an assertion
+        // preventing accessing `Proxy.myProperty` on Proxy Objects: https://github.com/emberjs/ember.js/issues/16148
+        // so `this.validate().then` will trigger the assertion
+        // The workaround is to avoid returning the `errors`, we don't need them because we never access on the error callback and
+        // in case this is needed, it is available in the `validatedObject.errors`
+        return reject();
       }
-
-      return errors;
     });
   },
 
